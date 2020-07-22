@@ -34,18 +34,34 @@ export default function App(): JSX.Element {
 
   const listTodoItems = todos.map((todo, index) => {
     // Only do this if items have no stable IDs
-    return <li key={index}>{todo.text}</li>;
+    return (
+      <Fragment key={index}>
+        <div style={{ textDecoration: todo.complete ? "line-through" : " " }}>
+          {todo.text}
+        </div>
+        <div>
+          <button type="button" onClick={() => completeTodo(index)}>
+            {todo.complete ? "Incompete" : "Complete"}
+          </button>
+          <button type="button" onClick={() => removeTodo(index)}>
+            Remove
+          </button>
+        </div>
+      </Fragment>
+    );
   });
 
-  // Can use a parenthesis and omit the return instead of {}
-  /*
-  const listTodoItems = todos.map((todo, index) => (
-    // Only do this if items have no stable IDs
-    <li key={index}>{todo.text}</li>
-  ));
-  */
+  const completeTodo = (index: number): void => {
+    const newTodos: ITodo[] = [...todos];
+    newTodos[index].complete = !newTodos[index].complete;
+    setTodos(newTodos);
+  };
 
-  console.log(todos);
+  const removeTodo = (index: number): void => {
+    const newTodos: ITodo[] = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
 
   return (
     <Fragment>
